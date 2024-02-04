@@ -60,10 +60,30 @@ class RestaurantByID(Resource):
             restaurant_dict["pizzas"].append(pizza_dict)
         
         return make_response(jsonify(restaurant_dict), 200)
+    
+    def delete(self, id):
+
+        restaurant_to_delete=Restaurant.query.filter(Restaurant.id == id).first()
+
+        if not restaurant_to_delete:
+            return make_response(jsonify({"error": "Restaurant not found"}), 404)
+        
+        else:
+            restaurant_pizzas=restaurant_to_delete.restaurant_pizzas
+
+            if restaurant_pizzas:
+                for restaurant_pizza in restaurant_pizzas:
+                    db.session.delete(restaurant_pizza)
+
+            db.session.delete(restaurant_to_delete)
+            db.session.commit()
+
+            return make_response(jsonify({}), 200)
 
 api.add_resource(RestaurantByID, "/restaurants/<int:id>")
 
 class Pizzas(Resource):
+
     def get(self):
         pizzas=Pizza.query.all()
         response=[]
@@ -76,6 +96,7 @@ class Pizzas(Resource):
                 'ingredients': pizza.ingredients
             })
         return make_response(jsonify(response), 200)
+    
 
 api.add_resource(Pizzas, "/pizzas")
 
