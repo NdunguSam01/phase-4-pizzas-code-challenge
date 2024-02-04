@@ -83,7 +83,7 @@ In order to view the results on the front end, follow the instructions below:
     npm start --prefix client
     ```
 
-Once the React application loads, you should be able to see the data loaded from the database.
+Once the React application loads, you should be able to see the data loaded from the database via [http://localhost:4000/](http://localhost:4000/).
 
 Follow the links displayed on the page to view the data and perform various actions on the application.
 
