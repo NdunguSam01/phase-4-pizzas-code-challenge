@@ -1,4 +1,4 @@
-import { Route, Switch } from "react-router";
+import { Route, Routes } from "react-router";
 import Home from "./Home";
 import Navbar from "./Navbar";
 import Restaurant from "./Restaurant";
@@ -7,14 +7,10 @@ function App() {
   return (
     <>
       <Navbar />
-      <Switch>
-        <Route exact path="/restaurants/:id">
-          <Restaurant />
-        </Route>
-        <Route exact path="/">
-          <Home />
-        </Route>
-      </Switch>
+      <Routes>
+        <Route exact path="/restaurants/:id" element={<Restaurant/>}></Route>
+        <Route exact path="/" element={<Home/>}></Route>
+      </Routes>
     </>
   );
 }

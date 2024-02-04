@@ -110,21 +110,51 @@ class RestaurantPizzas(Resource):
 
         if price_validation != price:
             response={
-                "error": ["Validation errors"]
+                "errors": ["Validation errors"]
             }
             return make_response(jsonify(response), 400)
 
         else:
-            new_restaurant_pizza=RestaurantPizza(price=price, pizza_id=pizza_id,restaurant_id=restaurant_id)
-            db.session.add(new_restaurant_pizza)
-            db.session.commit()
-            response={
-                "id": new_restaurant_pizza.pizza.id,
-                "name": new_restaurant_pizza.pizza.name,
-                "ingredients": new_restaurant_pizza.pizza.ingredients
-            }
+            new_restaurant_pizza_query = RestaurantPizza.query.filter(RestaurantPizza.pizza_id==pizza_id, RestaurantPizza.restaurant_id == restaurant_id).first()
 
-            return make_response(jsonify(response), 201)
+            if not new_restaurant_pizza_query:
+                new_restaurant_pizza = RestaurantPizza(price=price, pizza_id=pizza_id, restaurant_id=restaurant_id)
+                db.session.add(new_restaurant_pizza)
+                db.session.commit()
+
+                response = {
+                    "id": new_restaurant_pizza.pizza.id,
+                    "name": new_restaurant_pizza.pizza.name,
+                    "ingredients": new_restaurant_pizza.pizza.ingredients
+                }
+
+                return make_response(jsonify(response), 201)
+            else:
+                response = {
+                    "errors": ["Restaurant pizza already exists"]
+                }
+                return make_response(jsonify(response), 400)
+                
+            # new_restaurant_pizza_query=RestaurantPizza.query.filter(RestaurantPizza.pizza_id == pizza_id, RestaurantPizza.restaurant_id == restaurant_id, RestaurantPizza.price == price).first()
+            # print(new_restaurant_pizza_query)
+            
+            # if new_restaurant_pizza_query:
+            #     response={
+            #         "errors": ["Restaurant pizza already exists"]
+            #     }
+            #     return make_response(jsonify(response), 400)
+            # else:
+
+            #     new_restaurant_pizza=RestaurantPizza(price=price, pizza_id=pizza_id,restaurant_id=restaurant_id)
+            #     db.session.add(new_restaurant_pizza)
+            #     db.session.commit()
+            #     response={
+            #         "id": new_restaurant_pizza.pizza.id,
+            #         "name": new_restaurant_pizza.pizza.name,
+            #         "ingredients": new_restaurant_pizza.pizza.ingredients
+            #     }
+
+            #     return make_response(jsonify(response), 201)
 
 api.add_resource(RestaurantPizzas, "/restaurant_pizzas")
 if __name__ == '__main__':
