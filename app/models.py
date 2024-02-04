@@ -54,6 +54,6 @@ class RestaurantPizza(db.Model):
         else:
             return price
         
-    def __repr__(self):
-        return f"Restaurant Name: {self.restaurant.name}\nPizza Name: {self.pizza.name}\nPrice: {self.price}"
+    # def __repr__(self):
+    #     return f"Restaurant Name: {self.restaurant.name}\nPizza Name: {self.pizza.name}\nPrice: {self.price}"
         

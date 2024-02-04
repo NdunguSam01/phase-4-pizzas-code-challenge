@@ -9,6 +9,7 @@ flask-sqlalchemy = "*"
 flask-migrate = "*"
 pytest = "*"
 faker = "*"
+flask-restful = "*"
 
 [requires]
 python_version = "3.8.13"
