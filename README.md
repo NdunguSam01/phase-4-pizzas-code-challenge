@@ -9,199 +9,96 @@ working.
 Your job is to build out the Flask API to add the functionality described in the
 deliverables below.
 
-## Setup
+## Project Pre-requisites
 
-To download the dependencies for the frontend and backend, run:
+To successully run this project, the following software(s) need to be installed in your machine:
 
-```sh
-pipenv install
-npm install --prefix client
-```
+1. **Python** - You can download it from their [official site](https://www.python.org/downloads/).
+2. **Pipenv** - This is a Python virtual environment management tool that automatically creates and manages a virtualenv for your projects, as well as adds/removes packages from your Pipfile. You can download it from their [official site](https://pypi.org/project/pipenv/).
+3. **Node** - This is an open-source, cross-platform JavaScript library and runtime environment. You can download it from [https://nodejs.org/en](https://nodejs.org/en)
 
-There is some starter code in the `app/seed.py` file so that once you've
-generated the models, you'll be able to create data to test your application.
+## Project Setup Instructions
 
-You can run your Flask API on [`localhost:5555`](http://localhost:5555) by running:
+### Starting the server
 
-```sh
-python app.py
-```
+In order to start the of this project, create a new directory where you want to store the project files, navigate into it and follow the instructions below:
 
-You can run your React app on [`localhost:4000`](http://localhost:4000) by running:
+1. **Cloning**- clone the repository by typing the following command into your terminal:
 
-```sh
-npm start --prefix client
-```
+    ```
+    git clone https://github.com/NdunguSam01/phase-4-pizzas-code-challenge
+    ```
 
-You are not being assessed on React, and you don't have to update any of the React
-code; the frontend code is available just so that you can test out the behavior
-of your API in a realistic setting.
+    Optionally, you can download the zipped file by clicking the green Code button then selecting the "Download ZIP" option.
 
-There are also tests included which you can run using `pytest -x` to check your work.
+2. **Installing dependencies** - since this project needs various dependencies to run,  type the following command in your terminal:
 
-Depending on your preference, you can either check your progress by:
+    ```
+    pipenv install
+    ```
 
-- Running `pytest -x` and seeing if your code passes the tests
-- Running the React application in the browser and interacting with the API via
-  the frontend
-- Running the Flask server and using Postman to make requests
+    After this operation is completed, run the following command to enter into the virtual environment:
 
-## Models
+    ```
+    pipenv shell
+    ```
 
-You need to create the following relationships:
+3. **Create the database** - once you have successfully cloned the project and entered the virtual environment, run the following commands to navigate into the app folder and create an instance of the database since the project's database migrations have already been done
 
-- A `Restaurant` has many `Pizza`s through `RestaurantPizza`
-- A `Pizza` has many `Restaurant`s through `RestaurantPizza`
-- A `RestaurantPizza` belongs to a `Restaurant` and belongs to a `Pizza`
+    ```
+    cd app
+    ```
 
-Start by creating the models and migrations for the following database tables:
+    ```
+    flask db upgrade 
+    ```
 
-![domain diagram](domain.png)
+4. **Seed the database** - to successfully view the results, run the seed file  which will populate the database with data
 
-Add any code needed in the model files to establish the relationships.
+    ```
+    python3 seed.py
+    ```
 
-Then, run the migrations and seed file:
+5. **Start the Flask API** - to start the Flask API, run the app.py file
 
-```sh
-flask db revision --autogenerate -m'message'
-flask db upgrade
-python db/seed.py
-```
+    ```
+    python3 app.py
+    ```
 
-> If you aren't able to get the provided seed file working, you are welcome to
-> generate your own seed data to test the application.
+Once the server runs, it can be accessed via [http://127.0.0.1:5555/](http://127.0.0.1:5555/)
 
-## Validations
+### Starting the front end application
 
-Add validations to the `RestaurantPizza` model:
+In order to view the results on the front end, follow the instructions below:
 
-- must have a `price` between 1 and 30
+1. **Install dependencies** - to install the dependencies needed to run the React application, open a new terminal and enter the following command
 
-## Routes
+    ```
+    npm install --prefix client
+    ```
 
-Set up the following routes. Make sure to return JSON data in the format
-specified along with the appropriate HTTP verb.
+2. **Starting the React application** - run the follwoing command to start the application
 
-### GET /restaurants
+    ```
+    npm start --prefix client
+    ```
 
-Return JSON data in the format below:
+Once the React application loads, you should be able to see the data loaded from the database.
 
-```json
-[
-  {
-    "id": 1,
-    "name": "Sottocasa NYC",
-    "address": "298 Atlantic Ave, Brooklyn, NY 11201"
-  },
-  {
-    "id": 2,
-    "name": "PizzArte",
-    "address": "69 W 55th St, New York, NY 10019"
-  }
-]
-```
+Follow the links displayed on the page to view the data and perform various actions on the application.
 
-### GET /restaurants/:id
+## Author
 
-If the `Restaurant` exists, return JSON data in the format below:
+[Samuel Muigai](https://github.com/NdunguSam01)
 
-```json
-{
-  "id": 1,
-  "name": "Sottocasa NYC",
-  "address": "298 Atlantic Ave, Brooklyn, NY 11201",
-  "pizzas": [
-    {
-      "id": 1,
-      "name": "Cheese",
-      "ingredients": "Dough, Tomato Sauce, Cheese"
-    },
-    {
-      "id": 2,
-      "name": "Pepperoni",
-      "ingredients": "Dough, Tomato Sauce, Cheese, Pepperoni"
-    }
-  ]
-}
-```
+## License
 
-If the `Restaurant` does not exist, return the following JSON data, along with
-the appropriate HTTP status code:
+MIT License
 
-```json
-{
-  "error": "Restaurant not found"
-}
-```
+Copyright &copy; 2024 Samuel Muigai
 
-### DELETE /restaurants/:id
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
-If the `Restaurant` exists, it should be removed from the database, along with
-any `RestaurantPizza`s that are associated with it (a `RestaurantPizza` belongs
-to a `Restaurant`, so you need to delete the `RestaurantPizza`s before the
-`Restaurant` can be deleted).
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-After deleting the `Restaurant`, return an _empty_ response body, along with the
-appropriate HTTP status code.
-
-If the `Restaurant` does not exist, return the following JSON data, along with
-the appropriate HTTP status code:
-
-```json
-{
-  "error": "Restaurant not found"
-}
-```
-
-### GET /pizzas
-
-Return JSON data in the format below:
-
-```json
-[
-  {
-    "id": 1,
-    "name": "Cheese",
-    "ingredients": "Dough, Tomato Sauce, Cheese"
-  },
-  {
-    "id": 2,
-    "name": "Pepperoni",
-    "ingredients": "Dough, Tomato Sauce, Cheese, Pepperoni"
-  }
-]
-```
-
-### POST /restaurant_pizzas
-
-This route should create a new `RestaurantPizza` that is associated with an
-existing `Pizza` and `Restaurant`. It should accept an object with the following
-properties in the body of the request:
-
-```json
-{
-  "price": 5,
-  "pizza_id": 1,
-  "restaurant_id": 3
-}
-```
-
-If the `RestaurantPizza` is created successfully, send back a response with the data
-related to the `Pizza`:
-
-```json
-{
-  "id": 1,
-  "name": "Cheese",
-  "ingredients": "Dough, Tomato Sauce, Cheese"
-}
-```
-
-If the `RestaurantPizza` is **not** created successfully, return the following
-JSON data, along with the appropriate HTTP status code:
-
-```json
-{
-  "errors": ["validation errors"]
-}
-```
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
