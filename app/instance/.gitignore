@@ -1,2 +1,2 @@
-# Ignore everything in this directory
+# Ignore the database file in this directory
 *.db
