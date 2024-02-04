@@ -1,13 +1,7 @@
 # Flask Code Challenge - Pizza Restaurants
+## Project Description
 
-For this assessment, you'll be working with a Pizza Restaurant domain.
-
-In this repo, there is a Flask application with some features built out. There
-is also a fully built React frontend application, so you can test if your API is
-working.
-
-Your job is to build out the Flask API to add the functionality described in the
-deliverables below.
+This project is a Flask and React based application that creates  an interactive web page to display information about pizza restaurants. 
 
 ## Project Pre-requisites
 
